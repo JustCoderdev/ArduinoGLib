@@ -1,0 +1,4 @@
+lib/sources/*
+
+.old_session.vim
+.session.vim
