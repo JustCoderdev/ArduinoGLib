@@ -192,9 +192,8 @@
 #define RL_QUATERNION_TYPE
 #define RL_MATRIX_TYPE
 
-// Some Basic Colors
+/* Some Basic Colors
 // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-/*
 #define LIGHTGRAY  CLITERAL(Color){ 200, 200, 200, 255 }   // Light Gray
 #define GRAY       CLITERAL(Color){ 130, 130, 130, 255 }   // Gray
 #define DARKGRAY   CLITERAL(Color){ 80, 80, 80, 255 }      // Dark Gray
@@ -219,24 +218,22 @@
 
 #define WHITE      CLITERAL(Color){ 255, 255, 255, 255 }   // White
 #define BLACK      CLITERAL(Color){ 0, 0, 0, 255 }         // Black
-#define BLANK      CLITERAL(Color){ 0, 0, 0, 0 }           // Blank
-(Transparent) #define MAGENTA    CLITERAL(Color){ 255, 0, 255, 255 }     //
-Magenta #define RAYWHITE   CLITERAL(Color){ 245, 245, 245, 255 }   // My own
-White (raylib logo)
+#define BLANK      CLITERAL(Color){ 0, 0, 0, 0 }           // Blank (Transparent)
+#define MAGENTA    CLITERAL(Color){ 255, 0, 255, 255 }     // Magenta
+#define RAYWHITE   CLITERAL(Color){ 245, 245, 245, 255 }   // My own White (raylib logo)
 */
+
 
 //----------------------------------------------------------------------------------
 // Structures Definition
 //----------------------------------------------------------------------------------
 // Boolean type
-#ifndef RL_BOOL_TYPE
 #if(defined(__STDC__) && __STDC_VERSION__ >= 199901L) \
 	|| (defined(_MSC_VER) && _MSC_VER >= 1800)
 #include <stdbool.h>
 #elif !defined(__cplusplus) && !defined(bool)
 typedef enum bool { false = 0, true = !false } bool;
 #define RL_BOOL_TYPE
-#endif
 #endif
 
 /* Vector2, 2 components */
@@ -272,15 +269,12 @@ typedef struct Matrix {
 } Matrix;
 
 /* Color, 4 components, R8G8B8A8 (32bit) */
-#ifndef RL_COLOR_TYPE
-#define RL_COLOR_TYPE
 typedef struct Color {
 	unsigned char r; /* Color red value */
 	unsigned char g; /* Color green value */
 	unsigned char b; /* Color blue value */
 	unsigned char a; /* Color alpha value */
 } Color;
-#endif
 
 /* Rectangle, 4 components */
 typedef struct Rectangle {

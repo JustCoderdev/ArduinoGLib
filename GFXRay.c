@@ -1,3 +1,7 @@
+/* #ifndef GFXRAY_IMP_ */
+/* typedef void make_cc_happier; */
+/* #endif */
+
 #define GFXRAY_IMP_
 #ifdef GFXRAY_IMP_
 
@@ -12,9 +16,10 @@ void GFX_window_finalize(void)
 {
 	CloseWindow();
 }
-bool GFX_window_should_close(void)
+GFX_bool GFX_window_should_close(void)
 {
-	return WindowShouldClose();
+	if(WindowShouldClose()) return True;
+	return False;
 }
 
 void GFX_screen_begin(void)
@@ -25,23 +30,28 @@ void GFX_screen_switch(void)
 {
 	EndDrawing();
 }
-void GFX_screen_fill(Color color)
+void GFX_screen_fill(GFX_Color color)
 {
-	ClearBackground(color);
+	Color tmp = CLITERAL(Color)(C565TORGB(color));
+	ClearBackground(tmp);
 }
 
 void GFX_draw_line(
-	n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY, Color color)
+	n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY, GFX_Color color)
 {
-	DrawLine(startPosX, startPosY, endPosX, endPosY, color);
+	Color tmp = C565TORGB(color);
+	DrawLine(startPosX, startPosY, endPosX, endPosY, tmp);
 }
 
-void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, Color color)
+void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, GFX_Color color)
 {
-	DrawRectangleLines(posX, posY, width, height, color);
+	Color tmp = {
+		255, 255, 255, 255
+	};
+	DrawRectangleLines(posX, posY, width, height, tmp);
 }
 
-void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)
+void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, GFX_Color color)
 {
 	DrawRectangle(posX, posY, width, height, color);
 }
