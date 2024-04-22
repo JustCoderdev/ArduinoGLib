@@ -16,7 +16,7 @@ FLAGS=-xc -Wall -Wextra -Werror -Wpedantic \
 	  -lraylib -lGL -lm -lpthread -ldl -lX11 -lXrandr -lXinerama -lXi -lXcursor
 #-fcolor-diagnostics \
 
-SRC_FILES=${FILE_ENTRY}
+SRC_FILES=${FILE_ENTRY} ListView.c
 #$(wildcard *.c)
 
 local: clean build run
