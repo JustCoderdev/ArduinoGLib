@@ -7,13 +7,17 @@
 # Raylib doesn't like clang, use gcc instead!
 
 FILE_ENTRY=main.c
-FLAGS=-xc -Wall -Wextra -Werror -Wpedantic -Wunused \
-	  -pedantic -pedantic-errors -std=c99 \
+FLAGS=-xc -Wall -Wextra -Werror -Wpedantic \
+	  -Wno-unused-variable \
+	  -Wno-unused-const-variable  -Wno-unused-value \
+	  -Wno-unused-function -Wno-unused-parameter -Wno-unused-but-set-variable \
+	  -pedantic -pedantic-errors -std=c99 -g \
 	  -I./lib -L./lib/raylib \
 	  -lraylib -lGL -lm -lpthread -ldl -lX11 -lXrandr -lXinerama -lXi -lXcursor
 #-fcolor-diagnostics \
 
-SRC_FILES=${FILE_ENTRY} $(wildcard *.c)
+SRC_FILES=${FILE_ENTRY}
+#$(wildcard *.c)
 
 local: clean build run
 clean:

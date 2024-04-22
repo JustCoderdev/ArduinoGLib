@@ -25,8 +25,8 @@ pkgs.mkShell {
 
 	shellHook = ''
 		echo -e "\033[34mAccessing C shell\033[0m"
-		export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/ryuji/Developer/Projects/ArduinoGLib/lib/raylib/lib"
-		ldconfig -C .ldcache
+		export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/ryuji/Developer/Projects/ArduinoGLib/lib/raylib"
+		ldconfig -C ldcache
 		zsh
 	'';
 		#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${pkgs.glib.out}/lib"
