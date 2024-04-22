@@ -17,7 +17,9 @@ const Color DEBUG_GRAY = {102, 102, 102, 255};
 const Color TINT_RED = {230, 41, 55, 255};
 const Color TINT_PINK = {238, 119, 205, 255};
 const Color TINT_GREEN = {150, 238, 119, 255};
+const Color TINT_YELLOW = { 253, 249, 0, 255 };
 const Color TINT_BLUE = {119, 152, 238, 255};
+
 
 void tick_to_string(n64 tick, char *text, int max_len)
 {
@@ -52,52 +54,85 @@ const ListItem ITEMS[] = {
 	{"Item18", 6},
 };
 const n8 ITEMS_COUNT = ARRAY_LEN(ITEMS, ListItem);
-const Rectangle BORDER = {0, 0, WIDTH, HEIGHT};
+n64 tick = 0;
+
+typedef enum { SELECTOR, DETAIL } State;
 
 #if 1
 int main(void)
 {
 	Color BACKGROUND = GRAY;
 	Color FOREGROUND = TINT_RED;
-	n32 touch_tick_start = 0;
 
+	State app_state = SELECTOR;
+
+	n32 touch_tick_start = 0;
 	n64 selected_item = 0;
 
+/* DEBUG */
 #define TICK_MAX_LEN (20 + 1)
-	n64 tick = 0;
 	char text[TICK_MAX_LEN];
 	text[TICK_MAX_LEN - 1] = '\0';
+	/* DEBUG */
 
 	InitWindow(WIDTH, HEIGHT, "Display emulator");
 	while(!WindowShouldClose())
 	{
+		const Rectangle BORDER = {0, 0, WIDTH, HEIGHT};
+
 		BeginDrawing();
 		ClearBackground(BACKGROUND);
 
 		DrawRectangleLinesEx(BORDER, STROKE, FOREGROUND);
 
-		if(IsKeyDown(KEY_DOWN) && tick - touch_tick_start >= KEY_DELAY)
+		switch(app_state)
 		{
-			touch_tick_start = tick;
-			selected_item = (selected_item + 1) % ITEMS_COUNT;
-		}
-		if(IsKeyDown(KEY_UP) && tick - touch_tick_start >= KEY_DELAY)
-		{
-			touch_tick_start = tick;
-			if(selected_item == 0) selected_item = ITEMS_COUNT;
-			selected_item--;
-		}
+			case SELECTOR:
+				FOREGROUND = TINT_RED;
 
-		ListView(PADDING + STROKE,
-				 PADDING + STROKE,
-				 WIDTH - DPADDING - 4,
-				 HEIGHT - DPADDING - 4,
-				 ITEMS,
-				 ITEMS_COUNT,
-				 &selected_item,
-				 FOREGROUND,
-				 BACKGROUND);
+				if(IsKeyDown(KEY_DOWN) && tick - touch_tick_start >= KEY_DELAY)
+				{
+					touch_tick_start = tick;
+					selected_item = (selected_item + 1) % ITEMS_COUNT;
+				}
+				if(IsKeyDown(KEY_UP) && tick - touch_tick_start >= KEY_DELAY)
+				{
+					touch_tick_start = tick;
+					if(selected_item == 0) selected_item = ITEMS_COUNT;
+					(selected_item)--;
+				}
 
+				ListView(PADDING + STROKE,
+						 PADDING + STROKE,
+						 WIDTH - DPADDING - 4,
+						 HEIGHT - DPADDING - 4,
+						 ITEMS,
+						 ITEMS_COUNT,
+						 &selected_item,
+						 FOREGROUND,
+						 BACKGROUND);
+
+				if(IsKeyPressed(KEY_OK) && tick - touch_tick_start >= KEY_DELAY)
+				{
+					touch_tick_start = tick;
+					printf("OK: Item (%lu)\n", selected_item);
+					printf("%s\n", ITEMS[selected_item].text);
+					app_state = DETAIL;
+				}
+				break;
+
+			case DETAIL:
+				FOREGROUND = TINT_YELLOW;
+				DrawText(ITEMS[selected_item].text, WIDTH / 2 - DPADDING, HEIGHT / 2, 20, FOREGROUND);
+
+				if(IsKeyPressed(KEY_LEFT))
+				{
+					app_state = SELECTOR;
+					printf("OK: Item (%lu)\n", selected_item);
+					printf("%s\n", ITEMS[selected_item].text);
+				}
+				break;
+		}
 
 		tick_to_string(++tick, text, TICK_MAX_LEN);
 		DrawText(text, 2, 2, 6, DEBUG_GRAY);

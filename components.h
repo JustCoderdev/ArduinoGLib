@@ -27,7 +27,9 @@ extern const Color DEBUG_GRAY;
 extern const Color TINT_RED;
 extern const Color TINT_PINK;
 extern const Color TINT_GREEN;
+extern const Color TINT_YELLOW;
 extern const Color TINT_BLUE;
+extern n64 tick;
 
 #define PADDING 10
 #define DPADDING (2 * PADDING)
