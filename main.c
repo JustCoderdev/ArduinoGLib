@@ -1,25 +1,7 @@
 #include <stdio.h>
 
-/* #include <math.h> */
-
 #include "./components.h"
-#include "./lib/raylib.h"
-
-#define WIDTH 320
-#define HEIGHT 240
-
-const Color BLACK = {0};
-const Color GRAY = {30, 30, 30, 255};
-const Color WHITE = {255, 255, 255, 255};
-
-const Color DEBUG_GRAY = {102, 102, 102, 255};
-
-const Color TINT_RED = {230, 41, 55, 255};
-const Color TINT_PINK = {238, 119, 205, 255};
-const Color TINT_GREEN = {150, 238, 119, 255};
-const Color TINT_YELLOW = { 253, 249, 0, 255 };
-const Color TINT_BLUE = {119, 152, 238, 255};
-
+#include "./graphics.h"
 
 void tick_to_string(n64 tick, char *text, int max_len)
 {
@@ -75,27 +57,27 @@ int main(void)
 	text[TICK_MAX_LEN - 1] = '\0';
 	/* DEBUG */
 
-	InitWindow(WIDTH, HEIGHT, "Display emulator");
-	while(!WindowShouldClose())
+	GFX_window_initialize();
+	while(!GFX_window_should_close())
 	{
-		const Rectangle BORDER = {0, 0, WIDTH, HEIGHT};
+		GFX_screen_begin();
+		GFX_screen_fill(BACKGROUND);
 
-		BeginDrawing();
-		ClearBackground(BACKGROUND);
-
-		DrawRectangleLinesEx(BORDER, STROKE, FOREGROUND);
+		GFX_draw_rect(0, 0, WIDTH, HEIGHT, STROKE, FOREGROUND);
 
 		switch(app_state)
 		{
 			case SELECTOR:
 				FOREGROUND = TINT_RED;
 
-				if(IsKeyDown(KEY_DOWN) && tick - touch_tick_start >= KEY_DELAY)
+				if(GFX_input_key_is_down(KEY_DOWN)
+				   && tick - touch_tick_start >= KEY_DELAY)
 				{
 					touch_tick_start = tick;
 					selected_item = (selected_item + 1) % ITEMS_COUNT;
 				}
-				if(IsKeyDown(KEY_UP) && tick - touch_tick_start >= KEY_DELAY)
+				if(GFX_input_key_is_down(KEY_UP)
+				   && tick - touch_tick_start >= KEY_DELAY)
 				{
 					touch_tick_start = tick;
 					if(selected_item == 0) selected_item = ITEMS_COUNT;
@@ -112,7 +94,8 @@ int main(void)
 						 FOREGROUND,
 						 BACKGROUND);
 
-				if(IsKeyPressed(KEY_OK) && tick - touch_tick_start >= KEY_DELAY)
+				if(GFX_input_key_is_pressed(KEY_OK)
+				   && tick - touch_tick_start >= KEY_DELAY)
 				{
 					touch_tick_start = tick;
 					printf("OK: Item (%lu)\n", selected_item);
@@ -123,9 +106,13 @@ int main(void)
 
 			case DETAIL:
 				FOREGROUND = TINT_YELLOW;
-				DrawText(ITEMS[selected_item].text, WIDTH / 2 - DPADDING, HEIGHT / 2, 20, FOREGROUND);
+				GFX_draw_text(ITEMS[selected_item].text,
+							  WIDTH / 2 - DPADDING,
+							  HEIGHT / 2,
+							  20,
+							  FOREGROUND);
 
-				if(IsKeyPressed(KEY_LEFT))
+				if(GFX_input_key_is_pressed(KEY_LEFT))
 				{
 					app_state = SELECTOR;
 					printf("OK: Item (%lu)\n", selected_item);
@@ -135,12 +122,12 @@ int main(void)
 		}
 
 		tick_to_string(++tick, text, TICK_MAX_LEN);
-		DrawText(text, 2, 2, 6, DEBUG_GRAY);
+		GFX_draw_text(text, 2, 2, 6, DEBUG_GRAY);
 
-		EndDrawing();
+		GFX_screen_switch();
 	}
 
-	CloseWindow();
+	GFX_window_finalize();
 	return 0;
 }
 #endif

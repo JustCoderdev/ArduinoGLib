@@ -1,4 +1,5 @@
 #include "./components.h"
+#include "graphics.h"
 
 void ListView(n16 posX,
 			  n16 posY,
@@ -12,88 +13,71 @@ void ListView(n16 posX,
 {
 	n64 i, offset_item = 0;
 
-	const n16 LIST_BAR_WIDTH = 15;
+	const n16 BAR_WIDTH = 15;
 
-	const n16 LIST_ITEM_MARGIN = 8;
-	const n16 LIST_ITEM_FONT_SIZE = 20;
-	const n16 LIST_ITEM_WIDTH = width - LIST_BAR_WIDTH - PADDING;
-	const n16 LIST_ITEM_HEIGHT = 24;
-	const n16 LIST_MAX_ITEMS = height / (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN);
-	/* const n16 LIST_ITEM_HEIGHT_REST = */
-	/* 	height - (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN) * LIST_MAX_ITEMS; */
+	const n16 ITEM_MARGIN = 8;
+	const n16 ITEM_FONT_SIZE = 20;
+	const n16 ITEM_WIDTH = width - BAR_WIDTH - PADDING;
+	const n16 ITEM_HEIGHT = 24;
+	const n16 MAX_ITEMS = height / (ITEM_HEIGHT + ITEM_MARGIN);
 
-	const n16 LIST_BAR_HEIGHT =
-		(LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN) * LIST_MAX_ITEMS;
-	const n16 LIST_BAR_REL_X = width - LIST_BAR_WIDTH + PADDING;
-	const n16 LIST_BAR_REL_Y = posY;
+	const n16 BAR_HEIGHT = (ITEM_HEIGHT + ITEM_MARGIN) * MAX_ITEMS;
+	const n16 BAR_REL_X = width - BAR_WIDTH + PADDING;
+	const n16 BAR_REL_Y = posY;
 
-	const n16 LIST_CURSOR_HEIGHT = (LIST_BAR_HEIGHT / items_count);
-	const n16 LIST_CURSOR_HEIGHT_REST = (LIST_BAR_HEIGHT % items_count);
+	const n16 CURSOR_HEIGHT = (BAR_HEIGHT / items_count);
+	const n16 CURSOR_HEIGHT_REST = (BAR_HEIGHT % items_count);
 
-	Vector2 BEZEL_UP = {0};
-	Vector2 BEZEL_CENTER = {0};
-	Vector2 BEZEL_DOWN = {0};
+	GFX_draw_rect(
+		BAR_REL_X, BAR_REL_Y, BAR_WIDTH, BAR_HEIGHT, STROKE, foreground);
 
-	Rectangle LIST_BAR_BORDER = {0};
-	LIST_BAR_BORDER.x = LIST_BAR_REL_X;
-	LIST_BAR_BORDER.y = LIST_BAR_REL_Y;
-	LIST_BAR_BORDER.width = LIST_BAR_WIDTH;
-	LIST_BAR_BORDER.height = LIST_BAR_HEIGHT;
+	GFX_draw_rect_fill(BAR_REL_X,
+					   BAR_REL_Y + (*selected) * CURSOR_HEIGHT,
+					   BAR_WIDTH,
+					   CURSOR_HEIGHT + CURSOR_HEIGHT_REST,
+					   foreground);
 
-	DrawRectangleLinesEx(LIST_BAR_BORDER, STROKE, foreground);
-	DrawRectangle(LIST_BAR_REL_X,
-				  LIST_BAR_REL_Y + (*selected) * LIST_CURSOR_HEIGHT,
-				  LIST_BAR_WIDTH,
-				  LIST_CURSOR_HEIGHT + LIST_CURSOR_HEIGHT_REST,
-				  foreground);
+	offset_item = *selected / MAX_ITEMS;
 
-	offset_item = *selected / LIST_MAX_ITEMS;
-
-	for(i = LIST_MAX_ITEMS * offset_item;
-		i < items_count && i < LIST_MAX_ITEMS * (offset_item + 1);
+	for(i = MAX_ITEMS * offset_item;
+		i < items_count && i < MAX_ITEMS * (offset_item + 1);
 		++i)
 	{
-		const n16 LIST_ITEM_REL_Y =
-			posY
-			+ (i - LIST_MAX_ITEMS * offset_item)
-				  * (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN);
+		const n16 ITEM_REL_Y =
+			posY + (i - MAX_ITEMS * offset_item) * (ITEM_HEIGHT + ITEM_MARGIN);
 
 		ListItem item = items[i];
 
 		if(i == *selected)
 		{
-			DrawRectangle(posX,
-						  LIST_ITEM_REL_Y,
-						  LIST_ITEM_WIDTH,
-						  LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN,
-						  foreground);
+			GFX_draw_rect_fill(posX,
+							   ITEM_REL_Y,
+							   ITEM_WIDTH,
+							   ITEM_HEIGHT + ITEM_MARGIN,
+							   foreground);
 
-			/*
-			 *   \\
-			 *   //
-			 */
+			/* Draw Bezel */
+#define BEZEL_CENTER              \
+	posX + ITEM_WIDTH - HPADDING, \
+		(n64)(ITEM_REL_Y + (ITEM_HEIGHT + ITEM_MARGIN) / 2)
 
-			BEZEL_UP.x = posX + LIST_ITEM_WIDTH - PADDING;
-			BEZEL_UP.y =
-				LIST_ITEM_REL_Y + (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN) / 4;
+			GFX_draw_line(posX + ITEM_WIDTH - PADDING,
+						  ITEM_REL_Y + (ITEM_HEIGHT + ITEM_MARGIN) / 4,
+						  BEZEL_CENTER,
+						  STROKE + 1,
+						  background);
 
-			BEZEL_CENTER.x = (n64)(posX + LIST_ITEM_WIDTH - PADDING / 2);
-			BEZEL_CENTER.y = (n64)(LIST_ITEM_REL_Y
-								   + (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN) / 2);
-
-			BEZEL_DOWN.x = BEZEL_UP.x;
-			BEZEL_DOWN.y =
-				LIST_ITEM_REL_Y + (LIST_ITEM_HEIGHT + LIST_ITEM_MARGIN) * 3 / 4;
-
-			DrawLineEx(BEZEL_UP, BEZEL_CENTER, STROKE + 1, background);
-			DrawLineEx(BEZEL_CENTER, BEZEL_DOWN, STROKE + 1, background);
+			GFX_draw_line(BEZEL_CENTER,
+						  posX + ITEM_WIDTH - PADDING,
+						  ITEM_REL_Y + (ITEM_HEIGHT + ITEM_MARGIN) * 3 / 4,
+						  STROKE + 1,
+						  background);
 		}
 
-		DrawText(item.text,
-				 posX + PADDING,
-				 LIST_ITEM_REL_Y + LIST_ITEM_MARGIN / 2
-					 + LIST_ITEM_FONT_SIZE / 4,
-				 LIST_ITEM_FONT_SIZE,
-				 (i == *selected) ? background : foreground);
+		GFX_draw_text(item.text,
+					  posX + PADDING,
+					  ITEM_REL_Y + ITEM_MARGIN / 2 + ITEM_FONT_SIZE / 4,
+					  ITEM_FONT_SIZE,
+					  (i == *selected) ? background : foreground);
 	}
 }
