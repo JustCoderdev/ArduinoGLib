@@ -1,5 +1,5 @@
-#ifndef COMPONENTS_
-#define COMPONENTS_
+#ifndef GFX_COMPONENTS_H_
+#define GFX_COMPONENTS_H_
 
 #include "./graphics.h"
 
@@ -18,4 +18,4 @@ void ListView(n16 posX,
 			  Color foreground,
 			  Color background);
 
-#endif  /* COMPONENTS_ */
+#endif  /* GFX_COMPONENTS_H_ */

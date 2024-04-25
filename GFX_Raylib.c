@@ -1,8 +1,9 @@
-/* #define GRAPHICS_EMULATION */
-#ifdef GRAPHICS_EMULATION
+#if EMULATION_ENABLE
 
-#include "./graphics.h"
-#include "./lib/raylib.h"
+#include <assert.h>
+
+#include "graphics.h"
+#include "lib/raylib.h"
 
 /* Colors */
 const Color BLACK = {0};
@@ -74,14 +75,13 @@ void GFX_draw_line(n16 startPosX,
 				   n16 endPosX,
 				   n16 endPosY,
 				   n16 stroke,
-				   Color color);
-
-void GFX_draw_rect(n16 posX,
-				   n16 posY,
-				   n16 width,
-				   n16 height,
-				   n16 stroke,
 				   Color color)
+{
+	assert(0 && "GFX_draw_line not implemented");
+}
+
+void GFX_draw_rect(
+	n16 posX, n16 posY, n16 width, n16 height, n16 stroke, Color color)
 {
 	Rectangle rectangle = {0};
 	rectangle.x = posX;
@@ -96,13 +96,10 @@ void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)
 	DrawRectangle(posX, posY, width, height, color);
 }
 
-void GFX_draw_text(const char *text,
-				   int posX,
-				   int posY,
-				   int fontSize,
-				   Color color)
+void GFX_draw_text(
+	const char *text, int posX, int posY, int fontSize, Color color)
 {
-	GFX_draw_text(text, posX, posY, fontSize, color);
+	DrawText(text, posX, posY, fontSize, color);
 }
 
 #endif

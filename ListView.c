@@ -1,4 +1,4 @@
-#include "./components.h"
+#include "components.h"
 #include "graphics.h"
 
 void ListView(n16 posX,

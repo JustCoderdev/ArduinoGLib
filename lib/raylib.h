@@ -187,7 +187,6 @@ software in a
  * raylib) */
 /*  this defines are very useful for internal check and avoid type */
 /*  (re)definitions */
-#define RL_COLOR_TYPE
 #define RL_RECTANGLE_TYPE
 #define RL_VECTOR2_TYPE
 #define RL_VECTOR3_TYPE
@@ -277,12 +276,16 @@ typedef struct Matrix {
 } Matrix;
 
 /* Color, 4 components, R8G8B8A8 (32bit) */
+
+#ifndef RL_COLOR_TYPE
+#define RL_COLOR_TYPE
 typedef struct Color {
 	unsigned char r; /* Color red value */
 	unsigned char g; /* Color green value */
 	unsigned char b; /* Color blue value */
 	unsigned char a; /* Color alpha value */
 } Color;
+#endif
 
 /* Rectangle, 4 components */
 typedef struct Rectangle {
