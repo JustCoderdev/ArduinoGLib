@@ -23,7 +23,7 @@ const n32 KEY_LEFT = 'H';
 const n32 KEY_DOWN = 'J';
 const n32 KEY_UP = 'K';
 const n32 KEY_RIGHT = 'L';
-const n32 KEY_OK = 257;
+const n32 KEY_OK = 257; /* Enter */
 
 /* Window */
 void GFX_window_initialise(void)
@@ -70,7 +70,8 @@ bool GFX_input_key_is_pressed(int key)
 bool GFX_input_key_is_down(int key)
 {
 	/* Weird issue, solution here
-	* <https://www.reddit.com/r/raylib/comments/rwjyym/iskeydown_always_returns_true> */
+	 * <https://www.reddit.com/r/raylib/comments/rwjyym/iskeydown_always_returns_true>
+	 */
 	bool keyStatus = (char)IsKeyDown(key);
 
 	/* Status for J: 573973504 -  (0)Key down (74) */
@@ -136,6 +137,30 @@ void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
 void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)
 {
 	DrawRectangle(posX, posY, width, height, color);
+}
+
+void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+                         float roundness, Color color)
+{
+	Rectangle rectangle = {0};
+	rectangle.x = posX;
+	rectangle.y = posY;
+	rectangle.width = width;
+	rectangle.height = height;
+
+	DrawRectangleRoundedLines(rectangle, roundness, 20, stroke, color);
+}
+
+void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
+                               float roundness, Color color)
+{
+	Rectangle rectangle = {0};
+	rectangle.x = posX;
+	rectangle.y = posY;
+	rectangle.width = width;
+	rectangle.height = height;
+
+	DrawRectangleRounded(rectangle, roundness, 20, color);
 }
 
 void GFX_draw_text(const char *text, int posX, int posY, int fontSize,

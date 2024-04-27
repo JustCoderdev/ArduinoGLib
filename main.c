@@ -49,6 +49,10 @@ int main(void)
 	n64 selected_idx = 0;
 	n64 input_start = 0;
 
+	bool autoload = true;
+	n64  current_progress = 0;
+	n64  total_progress = 1000;
+
 #if DEBUG_ENABLE
 #	define TICK_MAX_LEN (20 + 1)
 	char text[TICK_MAX_LEN];
@@ -109,12 +113,69 @@ int main(void)
 			case VIEW_DETAIL:
 				foreground = TINT_YELLOW;
 
+				/* Handle input */
+				if(GFX_input_key_is_pressed(KEY_OK))
+				{
+					autoload = !autoload;
+				}
+
+				if(tick - input_start >= INPUT_DELAY
+				   && GFX_input_key_is_down(KEY_RIGHT))
+				{
+					input_start = tick;
+					current_progress = (current_progress + 20) % total_progress;
+				}
+
+				if(autoload && tick % 200 == 0)
+					current_progress = (current_progress + 1) % total_progress;
+
+				/* Draw UI */
 				GFX_draw_text(ITEMS[selected_idx].text,
-				              WIDTH / 2 - DPADDING,
-				              HEIGHT / 2,
+				              HWIDTH - DPADDING,
+				              HHEIGHT - DPADDING,
 				              20,
 				              foreground);
 
+				LoadingBar(WIDTH / 4,
+				           HHEIGHT - 4 - STROKE + DPADDING,
+				           HWIDTH,
+				           8,
+				           current_progress,
+				           total_progress,
+				           foreground,
+				           background);
+
+				if(!autoload)
+				{
+					GFX_draw_text("Stopped loading",
+					              HWIDTH - DPADDING * 2,
+					              HHEIGHT + 8 + STROKE + DPADDING,
+					              12,
+					              TINT_RED);
+				}
+				else
+				{
+#define BUFF_LEN 32
+					char  buffer[BUFF_LEN] = {0};
+					float progress_perc
+					    = (float)current_progress / total_progress * 100;
+					char string_len = snprintf(
+					    buffer, BUFF_LEN, "Loading... %0.0f%%", progress_perc);
+
+					if(string_len < 0)
+					{
+						printf("ERROR formatting Loading text");
+					}
+#undef BUFF_LEN
+
+					GFX_draw_text(buffer,
+					              HWIDTH - PADDING * 3,
+					              HHEIGHT + 8 + STROKE + DPADDING,
+					              12,
+					              foreground);
+				}
+
+				/* Exit logic */
 				if(GFX_input_key_is_pressed(KEY_LEFT))
 				{
 					current_view = VIEW_LIST;

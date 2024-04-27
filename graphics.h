@@ -38,7 +38,10 @@ extern const n32 KEY_OK;
 #define WIDTH  320
 #define HEIGHT 240
 
-#define INPUT_DELAY 1500
+#define HWIDTH  (WIDTH / 2)
+#define HHEIGHT (HEIGHT / 2)
+
+#define INPUT_DELAY 1300
 
 #define PADDING  10
 #define HPADDING (PADDING / 2)
@@ -88,6 +91,12 @@ void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
                    Color color);
 
 void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color);
+
+void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+                         float roundness, Color color);
+
+void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
+                              float roundness, Color color);
 
 void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
                    Color color);
