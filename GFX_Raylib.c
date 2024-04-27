@@ -1,4 +1,4 @@
-#if EMULATION_ENABLE
+#include <stdio.h>
 
 #include <assert.h>
 
@@ -19,18 +19,18 @@ const Color TINT_YELLOW = {253, 249, 0, 255};
 const Color TINT_BLUE = {119, 152, 238, 255};
 
 /* Controls */
-const int KEY_UP = 'K';
-const int KEY_DOWN = 'J';
-const int KEY_LEFT = 'H';
-const int KEY_RIGHT = 'L';
-const int KEY_OK = 257;
+const n32 KEY_LEFT = 'H';
+const n32 KEY_DOWN = 'J';
+const n32 KEY_UP = 'K';
+const n32 KEY_RIGHT = 'L';
+const n32 KEY_OK = 257;
 
 /* Window */
-void GFX_window_initialize(void)
+void GFX_window_initialise(void)
 {
 	InitWindow(WIDTH, HEIGHT, "Display emulator");
 }
-void GFX_window_finalize(void)
+void GFX_window_finalise(void)
 {
 	CloseWindow();
 }
@@ -56,32 +56,74 @@ void GFX_screen_fill(Color color)
 /* Input */
 bool GFX_input_key_is_pressed(int key)
 {
-	return IsKeyPressed(key);
+	if(IsKeyPressed(key))
+	{
+#if DEBUG_ENABLE
+		printf("Key pressed (%d)\n", key);
+#endif
+		return true;
+	}
+
+	return false;
 }
 
 bool GFX_input_key_is_down(int key)
 {
-	return IsKeyDown(key);
+	/* Weird issue, solution here
+	* <https://www.reddit.com/r/raylib/comments/rwjyym/iskeydown_always_returns_true> */
+	bool keyStatus = (char)IsKeyDown(key);
+
+	/* Status for J: 573973504 -  (0)Key down (74) */
+	/* printf("Status for %c: %d - %c (%d)", */
+	/*        key, keyStatus, (char)keyStatus, (char)keyStatus); */
+
+	if(keyStatus)
+	{
+#if DEBUG_ENABLE
+		printf("Key down (%d)\n", key);
+#endif
+		return true;
+	}
+
+	return false;
 }
 
 bool GFX_input_key_is_released(int key)
 {
-	return IsKeyReleased(key);
+	if(IsKeyReleased(key))
+	{
+#if DEBUG_ENABLE
+		printf("Key released (%d)\n", key);
+#endif
+		return true;
+	}
+
+	return false;
+}
+
+n32 GFX_input_key_pressed_next()
+{
+	return GetKeyPressed();
 }
 
 /* Drawing */
-void GFX_draw_line(n16 startPosX,
-				   n16 startPosY,
-				   n16 endPosX,
-				   n16 endPosY,
-				   n16 stroke,
-				   Color color)
+void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
+                   n16 stroke, Color color)
 {
-	assert(0 && "GFX_draw_line not implemented");
+	Vector2 startPos = {0};
+	Vector2 endPos = {0};
+
+	startPos.x = startPosX;
+	startPos.y = startPosY;
+
+	endPos.x = endPosX;
+	endPos.y = endPosY;
+
+	DrawLineEx(startPos, endPos, stroke, color);
 }
 
-void GFX_draw_rect(
-	n16 posX, n16 posY, n16 width, n16 height, n16 stroke, Color color)
+void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+                   Color color)
 {
 	Rectangle rectangle = {0};
 	rectangle.x = posX;
@@ -96,10 +138,8 @@ void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)
 	DrawRectangle(posX, posY, width, height, color);
 }
 
-void GFX_draw_text(
-	const char *text, int posX, int posY, int fontSize, Color color)
+void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
+                   Color color)
 {
 	DrawText(text, posX, posY, fontSize, color);
 }
-
-#endif

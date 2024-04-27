@@ -5,7 +5,7 @@
 
 typedef struct {
 	char *text;
-	n8 text_len;
+	n64 text_len;
 } ListItem;
 
 void ListView(n16 posX,

@@ -5,35 +5,43 @@
 # $ make PROGRAM_NAME="001_Multiples_of_3_or_5"
 
 # Raylib doesn't like clang, use gcc instead!
+CC = gcc
 
-PROGRAM_NAME=main
+PROGRAM_NAME = arduino
+
+SRC_FILES = $(wildcard *.c)
+OBJ_FILES = $(patsubst %.c,%.o,${SRC_FILES})
 
 #-fcolor-diagnostics \
-FLAGS=-xc -std=c99 -Wall -Wextra -Werror -Wpedantic \
-	  -pedantic-errors -pedantic  -g \
-	  -Wno-unused-variable -Wno-unused-const-variable \
-	  -Wno-unused-value -Wno-unused-function \
-	  -Wno-unused-parameter -Wno-unused-but-set-variable \
-	  -I./lib -L./lib/raylib \
-	  -lraylib -lGL -lm -lpthread -ldl -lX11 \
-	  -lXrandr -lXinerama -lXi -lXcursor
+# DFLAGS = -DEMULATION_ENABLE=1 -DDEBUG_ENABLE=1
+CFLAGS = -xc -std=c99 -Wall -Wextra -Werror -Wpedantic \
+		-pedantic-errors -pedantic -g -Wno-unused
 
-SRC_FILES=$(wildcard *.c)
+# -Wno-unused-variable -Wno-unused-const-variable \
+# -Wno-unused-value -Wno-unused-function \
+# -Wno-unused-parameter -Wno-unused-but-set-variable \
 
-local: clean build run
-clean:
-	@echo "Cleaning..."
-	@rm -f ./bin/${PROGRAM_NAME}
+# -lXrandr -lXinerama -lXi -lXcursor
+LDFLAGS = -I. -I./lib -L./lib/raylib \
+		-lraylib -lGL -lm -lpthread -ldl -lX11
 
-build: clean
+FLAGS = $(CFLAGS) $(LDFLAGS) $(DFLAGS)
+
+local: build run
+build:
 	@echo "Compiling... "
 	@mkdir -p bin
-	gcc ${FLAGS} ${SRC_FILES} -o bin/${PROGRAM_NAME}
+	$(CC) $(FLAGS) $(SRC_FILES) -o bin/${PROGRAM_NAME}
 
 run:
 	@echo "Running... "
-	@chmod +x bin/${PROGRAM_NAME}
-	@cd bin && ./${PROGRAM_NAME}
+	@chmod +x bin/$(PROGRAM_NAME)
+	@cd bin && ./$(PROGRAM_NAME)
+
+clean:
+	@echo "Cleaning..."
+	@rm -rf ./bin
+
 
 # raylib: ray_clean ray_build
 # ray_clean:
