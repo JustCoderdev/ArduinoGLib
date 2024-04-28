@@ -169,6 +169,6 @@ void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
                    Color foreground, Color background)
 {
 	(void)background;
-	DrawText(text, posX, posY, fontSize, color);
+	DrawText(text, posX, posY, fontSize, foreground);
 }
 #endif

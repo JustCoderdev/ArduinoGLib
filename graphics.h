@@ -8,7 +8,7 @@ typedef unsigned int      n32;
 typedef unsigned long int n64;
 
 #define DEBUG_ENABLE     1
-#define EMULATION_ENABLE 0
+#define EMULATION_ENABLE 1
 
 #if EMULATION_ENABLE
 #	ifndef RL_BOOL_TYPE
