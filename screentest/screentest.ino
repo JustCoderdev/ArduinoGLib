@@ -1,14 +1,20 @@
+/* Required Libs:
+ *  - MCUFriend_kbv
+ *  - Adafruit_GFX
+ *  - Adafruit Bus IO
+ */
+
 #include <MCUFRIEND_kbv.h>
 #include <assert.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define PORTRAIT 0
 #define LANDSCAPE 3
 #define PORTRAIT_REV 2
 #define LANDSCAPE_REV 1
 
-// RRRRRGGG GGGBBBBB
+// RRRRR_GGG-GGG_BBBBB
 #define BLACK 0x0000
 #define BLUE 0x001F
 #define RED 0xF800

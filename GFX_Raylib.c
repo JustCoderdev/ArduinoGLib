@@ -1,9 +1,11 @@
-#include <stdio.h>
-
-#include <assert.h>
-
 #include "graphics.h"
-#include "lib/raylib.h"
+#if EMULATION_ENABLE
+
+#	include <stdio.h>
+
+#	include <assert.h>
+
+#	include "lib/raylib.h"
 
 /* Colors */
 const Color BLACK = {0};
@@ -58,9 +60,9 @@ bool GFX_input_key_is_pressed(int key)
 {
 	if(IsKeyPressed(key))
 	{
-#if DEBUG_ENABLE
+#	if DEBUG_ENABLE
 		printf("Key pressed (%d)\n", key);
-#endif
+#	endif
 		return true;
 	}
 
@@ -80,9 +82,9 @@ bool GFX_input_key_is_down(int key)
 
 	if(keyStatus)
 	{
-#if DEBUG_ENABLE
+#	if DEBUG_ENABLE
 		printf("Key down (%d)\n", key);
-#endif
+#	endif
 		return true;
 	}
 
@@ -93,9 +95,9 @@ bool GFX_input_key_is_released(int key)
 {
 	if(IsKeyReleased(key))
 	{
-#if DEBUG_ENABLE
+#	if DEBUG_ENABLE
 		printf("Key released (%d)\n", key);
-#endif
+#	endif
 		return true;
 	}
 
@@ -152,7 +154,7 @@ void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
 }
 
 void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
-                               float roundness, Color color)
+                              float roundness, Color color)
 {
 	Rectangle rectangle = {0};
 	rectangle.x = posX;
@@ -164,7 +166,9 @@ void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
 }
 
 void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
-                   Color color)
+                   Color foreground, Color background)
 {
+	(void)background;
 	DrawText(text, posX, posY, fontSize, color);
 }
+#endif

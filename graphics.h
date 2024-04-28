@@ -8,7 +8,7 @@ typedef unsigned int      n32;
 typedef unsigned long int n64;
 
 #define DEBUG_ENABLE     1
-#define EMULATION_ENABLE 1
+#define EMULATION_ENABLE 0
 
 #if EMULATION_ENABLE
 #	ifndef RL_BOOL_TYPE
@@ -22,7 +22,6 @@ typedef struct Color {
 } Color;
 #	endif
 #else
-#	error "Adafruit not yet implemented :P"
 typedef n16 Color;
 typedef enum { true = (1 == 1), false = (1 != 1) } bool;
 #endif
@@ -99,6 +98,6 @@ void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
                               float roundness, Color color);
 
 void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
-                   Color color);
+                   Color foreground, Color background);
 
 #endif /* GFX_LIB_H_ */

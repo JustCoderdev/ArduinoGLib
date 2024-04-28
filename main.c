@@ -134,7 +134,7 @@ int main(void)
 				              HWIDTH - DPADDING,
 				              HHEIGHT - DPADDING,
 				              20,
-				              foreground);
+				              foreground, background);
 
 				LoadingBar(WIDTH / 4,
 				           HHEIGHT - 4 - STROKE + DPADDING,
@@ -151,7 +151,7 @@ int main(void)
 					              HWIDTH - DPADDING * 2,
 					              HHEIGHT + 8 + STROKE + DPADDING,
 					              12,
-					              TINT_RED);
+					              TINT_RED, background);
 				}
 				else
 				{
@@ -172,7 +172,7 @@ int main(void)
 					              HWIDTH - PADDING * 3,
 					              HHEIGHT + 8 + STROKE + DPADDING,
 					              12,
-					              foreground);
+					              foreground, background);
 				}
 
 				/* Exit logic */
@@ -185,7 +185,7 @@ int main(void)
 
 #if DEBUG_ENABLE
 		tick_to_string(++tick, text, TICK_MAX_LEN);
-		GFX_draw_text(text, 2, 2, 6, DEBUG_GRAY);
+		GFX_draw_text(text, 2, 2, 6, DEBUG_GRAY, background);
 #endif
 
 		GFX_screen_switch();

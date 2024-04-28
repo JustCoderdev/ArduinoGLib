@@ -22,10 +22,14 @@ CFLAGS = -xc -std=c99 -Wall -Wextra -Werror -Wpedantic \
 # -Wno-unused-parameter -Wno-unused-but-set-variable \
 
 # -lXrandr -lXinerama -lXi -lXcursor
-LDFLAGS = -I. -I./lib -L./lib/raylib \
-		-lraylib -lGL -lm -lpthread -ldl -lX11
+LDFLAGS = -L./lib/raylib -lraylib -lGL -lm -lpthread -ldl -lX11
 
-FLAGS = $(CFLAGS) $(LDFLAGS) $(DFLAGS)
+IFLAGS = -I. -I./lib -I./lib/Adafruit_BusIO \
+		 -I./lib/MCUFRIEND_kbv -I./lib/MCUFRIEND_kbv/extras/unused/ -I./lib/Adafruit_GFX_Library
+
+
+
+FLAGS = $(CFLAGS) $(LDFLAGS) $(IFLAGS) $(DFLAGS)
 
 local: build run
 build:

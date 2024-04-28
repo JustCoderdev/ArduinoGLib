@@ -1,51 +1,120 @@
-#include "./graphics.h"
-
+#include "graphics.h"
 #if !EMULATION_ENABLE
 
+#include <MCUFRIEND_kbv.h>
+
 /* Colors */
-const Color BLACK = {0};                  /* 0x0000 */
-const Color GRAY = {30, 30, 30, 255};     /* 0x20E4 */
-const Color WHITE = {255, 255, 255, 255}; /* 0xFFFF */
+const Color BLACK = 0x0000;
+const Color GRAY = 0x20E4;
+const Color WHITE =  0xFFFF;
 
-const Color DEBUG_GRAY = {102, 102, 102, 255}; /* 0x632C */
+const Color DEBUG_GRAY = 0x632C;
 
-const Color TINT_RED = {230, 41, 55, 255}; /* 0xE147 */
-const Color TINT_PINK = {238, 119, 205, 255};  /* 0xEBB9 */
-const Color TINT_GREEN = {150, 238, 119, 255}; /* 0x976E */
-const Color TINT_YELLOW = {253, 249, 0, 255};  /* 0xFFA0 */
-const Color TINT_BLUE = {119, 152, 238, 255};  /* 0x74BD */
+const Color TINT_RED    = 0xE147;
+const Color TINT_PINK   =  0xEBB9;
+const Color TINT_GREEN  = 0x976E;
+const Color TINT_YELLOW =  0xFFA0;
+const Color TINT_BLUE   =  0x74BD;
 
 /* Controls */
-const int KEY_UP = 'K';
-const int KEY_DOWN = 'J';
-const int KEY_LEFT = 'H';
-const int KEY_RIGHT = 'L';
-const int KEY_OK = 257;
+const n32 KEY_UP = 'K';
+const n32 KEY_DOWN = 'J';
+const n32 KEY_LEFT = 'H';
+const n32 KEY_RIGHT = 'L';
+const n32 KEY_OK = 257;
 
-/* Window */
-void GFX_window_initialize(void);
-void GFX_window_finalize(void);
-bool GFX_window_should_close(void);
+/* Implementation specific stuff */
+#define PORTRAIT 0
+#define LANDSCAPE 3
+#define PORTRAIT_REV 2
+#define LANDSCAPE_REV 1
+
+MCUFRIEND_kbv screen {A3, A2, A1, A0, A4};
+
+void GFX_window_initialise(void)
+{
+	screen.begin(screen.readID());
+	screen.setRotation(LANDSCAPE);
+
+	if (WIDTH != screen.width() || HEIGHT != screen.height())
+	{
+		/* Serial.println("[FATAL] WIDTH or HEIGHT mismatch"); */
+		/* death_screen_show(); */
+	}
+}
+void GFX_window_finalise(void) {}
+bool GFX_window_should_close(void)
+{
+	return false;
+}
 
 /* Screen */
-void GFX_screen_begin(void);
-void GFX_screen_switch(void);
-void GFX_screen_fill(Color color);
+void GFX_screen_begin(void) {
+	screen.startWrite();
+}
+void GFX_screen_switch(void) {
+	screen.endWrite();
+}
+
+void GFX_screen_fill(Color color)
+{
+	screen.fillScreen(color);
+}
 
 /* Input */
-bool GFX_input_key_is_pressed(int key);
-bool GFX_input_key_is_down(int key);
-bool GFX_input_key_is_released(int key);
+bool GFX_input_key_is_pressed(int key)
+{
+	return false;
+}
+bool GFX_input_key_is_down(int key)
+{
+	return false;
+}
+bool GFX_input_key_is_released(int key)
+{
+	return false;
+}
+
+n32 GFX_input_key_pressed_next()
+{
+	return 0;
+}
 
 /* Drawing */
 void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
-                   n16 stroke, Color color);
+                   n16 stroke, Color color)
+{
+    screen.drawLine(startPosX, startPosY, endPosX, endPosY, color),
+}
 
 void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
-                   Color color);
-void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color);
+                   Color color)
+{
+
+    screen.drawRect(posX, posY, width, height, color),
+}
+
+void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)
+{
+	screen.fillRect(posX, posY, width, height, color);
+}
+
+void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+                         float roundness, Color color)
+{
+	screen.drawRoundRect(posX, posY, width, height, roundness, color);
+}
+
+void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
+                              float roundness, Color color)
+{
+	screen.fillRoundRect(posX, posY, width, height, roundness, color);
+}
 
 void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
-                   Color color);
+                   Color foreground, Color background)
+{
+	screen.drawChar(posX, posY, *text, foreground, background, fontSize);
+}
 
 #endif

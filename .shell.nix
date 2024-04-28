@@ -28,12 +28,13 @@ pkgs.mkShell {
 
 	#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${pkgs.glib.out}/lib"
 	shellHook = ''
+		export PATH+=":${pkgs.arduino}/share/arduino/hardware/arduino/tools/avr/bin"
 		export LD_LIBRARY_PATH+=":$(pwd)/lib/raylib"
 		rm -f .ldcache
 		ldconfig -C .ldcache
 
 		zsh
-		echo -ne "\033[32m\$ \033[0m"
+		echo -e "\033[32m\$ \033[0m"
 	'';
 }
 
