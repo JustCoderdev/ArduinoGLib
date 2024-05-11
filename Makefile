@@ -5,8 +5,6 @@
 # $ make PROGRAM_NAME="001_Multiples_of_3_or_5"
 
 # Raylib doesn't like clang, use gcc instead!
-CC = gcc
-
 PROGRAM_NAME = arduino
 
 SRC_FILES = $(wildcard *.c)
@@ -14,22 +12,21 @@ OBJ_FILES = $(patsubst %.c,%.o,${SRC_FILES})
 
 #-fcolor-diagnostics \
 # DFLAGS = -DEMULATION_ENABLE=1 -DDEBUG_ENABLE=1
-CFLAGS = -xc -std=c99 -Wall -Wextra -Werror -Wpedantic \
+CC = gcc
+CCFLAGS = -xc -std=c99 -Wall -Wextra -Werror -Wpedantic \
 		-pedantic-errors -pedantic -g -Wno-unused
+
+IFLAGS = -I. -I./lib -I./lib/Adafruit_BusIO \
+		 -I./lib/MCUFRIEND_kbv -I./lib/MCUFRIEND_kbv/extras/unused/ -I./lib/Adafruit_GFX_Library
 
 # -Wno-unused-variable -Wno-unused-const-variable \
 # -Wno-unused-value -Wno-unused-function \
 # -Wno-unused-parameter -Wno-unused-but-set-variable \
 
+LDFLAGS = -Wl,-rpath=./lib/raylib/ -L./lib/raylib -lraylib -lGL -lm -lpthread -ldl -lX11
 # -lXrandr -lXinerama -lXi -lXcursor
-LDFLAGS = -L./lib/raylib -lraylib -lGL -lm -lpthread -ldl -lX11
 
-IFLAGS = -I. -I./lib -I./lib/Adafruit_BusIO \
-		 -I./lib/MCUFRIEND_kbv -I./lib/MCUFRIEND_kbv/extras/unused/ -I./lib/Adafruit_GFX_Library
-
-
-
-FLAGS = $(CFLAGS) $(LDFLAGS) $(IFLAGS) $(DFLAGS)
+FLAGS = $(CCFLAGS) $(IFLAGS)   $(LDFLAGS)   $(DFLAGS)
 
 local: build run
 build:
