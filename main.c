@@ -4,7 +4,7 @@
 #include "components.h"
 #include "graphics.h"
 
-void tick_to_string(n64 tick, char *text, int max_len)
+void tick_to_stringA(n64 tick, char *text, int max_len)
 {
 	n8 i;
 	for(i = 1; i < max_len; ++i)
@@ -35,7 +35,7 @@ const ListItem ITEMS[] = {
 };
 const n8 ITEMS_COUNT = ARRAY_LEN(ITEMS, ListItem);
 
-int main(void)
+int mainA(void)
 {
 	n64 tick = 0;
 	n8  i;
@@ -184,7 +184,7 @@ int main(void)
 		}
 
 #if DEBUG_ENABLE
-		tick_to_string(++tick, text, TICK_MAX_LEN);
+		tick_to_stringA(++tick, text, TICK_MAX_LEN);
 		GFX_draw_text(text, 2, 2, 6, DEBUG_GRAY, background);
 #endif
 

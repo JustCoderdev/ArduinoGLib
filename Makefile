@@ -6,7 +6,9 @@
 
 # Raylib doesn't like clang, use gcc instead!
 PROGRAM_NAME = arduino
+# PROGRAM_NAME = test
 
+# SRC_FILES = test.c
 SRC_FILES = $(wildcard *.c)
 OBJ_FILES = $(patsubst %.c,%.o,${SRC_FILES})
 
@@ -26,7 +28,7 @@ IFLAGS = -I. -I./lib -I./lib/Adafruit_BusIO \
 LDFLAGS = -Wl,-rpath=./lib/raylib/ -L./lib/raylib -lraylib -lGL -lm -lpthread -ldl -lX11
 # -lXrandr -lXinerama -lXi -lXcursor
 
-FLAGS = $(CCFLAGS) $(IFLAGS)   $(LDFLAGS)   $(DFLAGS)
+FLAGS = $(CCFLAGS) $(IFLAGS) $(LDFLAGS) $(DFLAGS)
 
 local: build run
 build:

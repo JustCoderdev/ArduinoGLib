@@ -80,7 +80,7 @@ bool GFX_input_key_is_released(int key);
 
 /*  Get key pressed (keycode), call it multiple times for */
 /*  keys queued, returns 0 when the queue is empty */
-n32 GFX_input_key_pressed_next();
+n32 GFX_input_key_pressed_next(void);
 
 /* Drawing */
 void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
