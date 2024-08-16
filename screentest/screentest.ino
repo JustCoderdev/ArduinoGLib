@@ -17,7 +17,7 @@
 // RRRRR_GGG-GGG_BBBBB
 #define BLACK 0x0000
 #define BLUE 0x001F
-#define RED 0xF800
+#define RED 0x0808 /* 0xF800 */
 
 #define WIDTH 320
 #define HEIGHT 240
