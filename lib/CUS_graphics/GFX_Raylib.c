@@ -5,7 +5,7 @@
 
 #	include <assert.h>
 
-#	include "lib/raylib.h"
+#	include <raylib.h>
 
 /* Colors */
 const Color BLACK = {0};

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <Arduino.h>
 #include <graphics.h>
 
 void tick_to_string(n64 tick, char *text, int max_len)
@@ -33,7 +34,7 @@ int main(void)
 		GFX_screen_begin();
 		GFX_screen_fill(background);
 
-		GFX_draw_rect(0, 0, WIDTH, HEIGHT, STROKE, foreground);
+		GFX_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, STROKE, foreground);
 
 #if DEBUG_ENABLE
 		tick_to_string(++tick, text, TICK_MAX_LEN);

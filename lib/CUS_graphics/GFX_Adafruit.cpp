@@ -36,7 +36,7 @@ void GFX_window_initialise(void)
 	screen.begin(screen.readID());
 	screen.setRotation(LANDSCAPE);
 
-	if (WIDTH != screen.width() || HEIGHT != screen.height())
+	if (SCREEN_WIDTH != screen.width() || SCREEN_HEIGHT != screen.height())
 	{
 		/* Serial.println("[FATAL] WIDTH or HEIGHT mismatch"); */
 		/* death_screen_show(); */
@@ -84,14 +84,14 @@ n32 GFX_input_key_pressed_next()
 void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
                    n16 stroke, Color color)
 {
-    screen.drawLine(startPosX, startPosY, endPosX, endPosY, color),
+    screen.drawLine(startPosX, startPosY, endPosX, endPosY, color);
 }
 
 void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
                    Color color)
 {
 
-    screen.drawRect(posX, posY, width, height, color),
+    screen.drawRect(posX, posY, width, height, color);
 }
 
 void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color)

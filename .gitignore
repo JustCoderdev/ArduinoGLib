@@ -1,9 +1,12 @@
-lib/sources/*
 bin/
+build*/
 
 .old_session.vim
 .session.vim
 
 .ldcache
 ldcache
+
+.Makefile.bak
+Makefile
 

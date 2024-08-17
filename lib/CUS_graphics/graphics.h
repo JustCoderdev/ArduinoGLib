@@ -8,13 +8,9 @@ typedef unsigned int      n32;
 typedef unsigned long int n64;
 
 #define DEBUG_ENABLE     1
-#define EMULATION_ENABLE 1
+#define EMULATION_ENABLE 0
 
 #if EMULATION_ENABLE
-#	ifndef RL_BOOL_TYPE
-#		define RL_BOOL_TYPE
-typedef enum { true = (1 == 1), false = (1 != 1) } bool;
-#	endif
 #	ifndef RL_COLOR_TYPE
 #		define RL_COLOR_TYPE
 typedef struct Color {
@@ -23,7 +19,18 @@ typedef struct Color {
 #	endif
 #else
 typedef n16 Color;
+#endif
+
+#ifndef RL_BOOL_TYPE
+#	define RL_BOOL_TYPE
+#	ifndef __cplusplus
+#		ifndef _BOOL
+#undef true
+#undef false
+#undef bool
 typedef enum { true = (1 == 1), false = (1 != 1) } bool;
+#		endif
+#	endif
 #endif
 
 /* Controls */
@@ -34,8 +41,8 @@ extern const n32 KEY_RIGHT;
 extern const n32 KEY_OK;
 
 /* Constants */
-#define WIDTH  320
-#define HEIGHT 240
+#define SCREEN_WIDTH  320
+#define SCREEN_HEIGHT 240
 
 #define HWIDTH  (WIDTH / 2)
 #define HHEIGHT (HEIGHT / 2)
