@@ -1,6 +1,6 @@
-#include "graphics.h"
 #if !EMULATION_ENABLE
 
+#include <graphics.h>
 #include <MCUFRIEND_kbv.h>
 
 /* Colors */

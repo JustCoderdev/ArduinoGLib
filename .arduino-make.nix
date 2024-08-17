@@ -1,5 +1,5 @@
 { pkgs ? import <nixpkgs> {
-#config.allowUnsupportedSystem = true;
+	#config.allowUnsupportedSystem = true;
 } }:
 
 let
@@ -64,6 +64,7 @@ pkgs.mkShell {
 		avrpkgs.binutils
 		avrpkgs.avrdude
 
+		pkgs.python3
 		pypkgs.pyserial
 	];
 
@@ -136,8 +137,7 @@ CXXFLAGS_STD      = -std=gnu++17
 ### Don't touch this!
 ### This is were you put the binaries you just compile using 'make'
 CURRENT_DIR       = \$(shell basename \$(CURDIR))
-OBJDIR            = \$(PROJECT_DIR)/build/\$(CURRENT_DIR)/\$(BOARD_TAG)
-
+OBJDIR            = "\$(PROJECT_DIR)/build/\$(CURRENT_DIR)/\$(BOARD_TAG)"
 
 
 ## Extra LIBs
@@ -149,9 +149,14 @@ ARDUINO_LIBS = \
 # Custom libs
 CUS_GRAPHICS_ARCHIVE = build-\$(BOARD_TAG)/libcus_graphics.a
 
-CFLAGS += -I\$(PROJECT_DIR)/lib/CUS_graphics
-CXXFLAGS += -I\$(PROJECT_DIR)/lib/CUS_graphics
+AAAAAAAAA=/lib/CUS_graphics
+CFLAGS += "-I\$(PROJECT_DIR)\$(AAAAAAAAA)"
+CXXFLAGS += "-I\$(PROJECT_DIR)\$(AAAAAAAAA)"
+#CXXFLAGS += -pedantic -Wall -Wextra
+#LDFLAGS += -fdiagnostics-color
+
 OTHER_OBJS = lib/CUS_graphics/\$(CUS_GRAPHICS_ARCHIVE)
+
 
 
 
@@ -162,13 +167,14 @@ include \$(ARDMK_DIR)/Arduino.mk
 ################################
 
 
-CUS_graphics/\$(CUS_GRAPHICS_ARCHIVE):
+lib/CUS_graphics/\$(CUS_GRAPHICS_ARCHIVE):
 	\$(MAKE) -C lib/CUS_graphics \$(CUS_GRAPHICS_ARCHIVE)
 
 clean::
 	\$(MAKE) -C lib/CUS_graphics clean
 EOL
 
+alias python=python3
 echo ${Leka-Arduino-Makefile}
 chmod a-w Makefile
 zsh

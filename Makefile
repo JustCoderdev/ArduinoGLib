@@ -63,8 +63,7 @@ CXXFLAGS_STD      = -std=gnu++17
 ### Don't touch this!
 ### This is were you put the binaries you just compile using 'make'
 CURRENT_DIR       = $(shell basename $(CURDIR))
-OBJDIR            = $(PROJECT_DIR)/build/$(CURRENT_DIR)/$(BOARD_TAG)
-
+OBJDIR            = "$(PROJECT_DIR)/build/$(CURRENT_DIR)/$(BOARD_TAG)"
 
 
 ## Extra LIBs
@@ -74,9 +73,14 @@ ARDUINO_LIBS = 	Adafruit_BusIO Adafruit_GFX_Library MCUFRIEND_kbv MCUFRIEND_kbv/
 # Custom libs
 CUS_GRAPHICS_ARCHIVE = build-$(BOARD_TAG)/libcus_graphics.a
 
-CFLAGS += -I$(PROJECT_DIR)/lib/CUS_graphics
-CXXFLAGS += -I$(PROJECT_DIR)/lib/CUS_graphics
+AAAAAAAAA=/lib/CUS_graphics
+CFLAGS += "-I$(PROJECT_DIR)$(AAAAAAAAA)"
+CXXFLAGS += "-I$(PROJECT_DIR)$(AAAAAAAAA)"
+#CXXFLAGS += -pedantic -Wall -Wextra
+#LDFLAGS += -fdiagnostics-color
+
 OTHER_OBJS = lib/CUS_graphics/$(CUS_GRAPHICS_ARCHIVE)
+
 
 
 
@@ -87,7 +91,7 @@ include $(ARDMK_DIR)/Arduino.mk
 ################################
 
 
-CUS_graphics/$(CUS_GRAPHICS_ARCHIVE):
+lib/CUS_graphics/$(CUS_GRAPHICS_ARCHIVE):
 	$(MAKE) -C lib/CUS_graphics $(CUS_GRAPHICS_ARCHIVE)
 
 clean::

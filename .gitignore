@@ -8,5 +8,5 @@ build*/
 ldcache
 
 .Makefile.bak
-Makefile
+./Makefile
 

@@ -71,40 +71,40 @@ extern const Color TINT_YELLOW;
 extern const Color TINT_BLUE;
 
 /* Window */
-void GFX_window_initialise(void);
-void GFX_window_finalise(void);
-bool GFX_window_should_close(void);
+extern void GFX_window_initialise(void);
+extern void GFX_window_finalise(void);
+extern bool GFX_window_should_close(void);
 
 /* Screen */
-void GFX_screen_begin(void);
-void GFX_screen_switch(void);
-void GFX_screen_fill(Color color);
+extern void GFX_screen_begin(void);
+extern void GFX_screen_switch(void);
+extern void GFX_screen_fill(Color color);
 
 /* Input */
-bool GFX_input_key_is_pressed(int key);
-bool GFX_input_key_is_down(int key);
-bool GFX_input_key_is_released(int key);
+extern bool GFX_input_key_is_pressed(int key);
+extern bool GFX_input_key_is_down(int key);
+extern bool GFX_input_key_is_released(int key);
 
 /*  Get key pressed (keycode), call it multiple times for */
 /*  keys queued, returns 0 when the queue is empty */
-n32 GFX_input_key_pressed_next();
+extern n32 GFX_input_key_pressed_next();
 
 /* Drawing */
-void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
+extern void GFX_draw_line(n16 startPosX, n16 startPosY, n16 endPosX, n16 endPosY,
                    n16 stroke, Color color);
 
-void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+extern void GFX_draw_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
                    Color color);
 
-void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color);
+extern void GFX_draw_rect_fill(n16 posX, n16 posY, n16 width, n16 height, Color color);
 
-void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
+extern void GFX_draw_round_rect(n16 posX, n16 posY, n16 width, n16 height, n16 stroke,
                          float roundness, Color color);
 
-void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
+extern void GFX_draw_round_rect_fill(n16 posX, n16 posY, n16 width, n16 height,
                               float roundness, Color color);
 
-void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
+extern void GFX_draw_text(const char *text, int posX, int posY, int fontSize,
                    Color foreground, Color background);
 
 #endif /* GFX_LIB_H_ */
